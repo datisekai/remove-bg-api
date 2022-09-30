@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import FormData from "form-data";
 import axios from "axios";
-import fs from "fs";
+import { encode } from "base64-arraybuffer";
 
 dotenv.config();
 
@@ -45,10 +45,10 @@ app.get("/remove", async (req: Request, res: Response) => {
       },
     });
 
-    const base64String = btoa(
-      String.fromCharCode(...new Uint8Array(result.data))
-    );
-    return res.json({ url: `data:image/png;base64,${base64String}` });
+    // const base64String = btoa(
+    //   String.fromCharCode(...new Uint8Array(result.data))
+    // );
+    return res.json({ url: `data:image/png;base64,${encode(result.data)}` });
   } catch (error) {
     console.log(error);
     return res.status(500).json("Internal server");
